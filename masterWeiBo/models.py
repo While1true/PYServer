@@ -18,4 +18,8 @@ class master(models.Model):
     def __str__(self):
         return self.content
 
+    def toJSON(self):
+        import json
+        return json.dumps(dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]]))
+
 
