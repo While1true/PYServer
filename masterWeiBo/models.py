@@ -22,4 +22,3 @@ class master(models.Model):
         import json
         return json.dumps(dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]]))
 
-
