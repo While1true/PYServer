@@ -7,14 +7,13 @@
 <link rel="stylesheet" href="static/indexcss.css"/>
 <body>
 
-<h1  align="center" id="title">Welcome to Weibo by master's words</h1>
-<h2> latest 5 words for you !!! </h2>
+<h1  align="center" id="title">Welcome to VangeBugs</h1>
+<h2 class="title" >-------分类 | Bug数-------</h2>
 {% if latest_list %}
 <ul>
-    <p class="title">类型（来源）| 内容</p>
     {% for late in latest_list %}
     <ul><p class="title">{{ late.category }}</p>
-        <p class="content">{{ late.content }}</p>
+        <p class="content">{{ late.dcount }}</p>
     </ul>
     {% endfor %}
 </ul>
