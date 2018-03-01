@@ -14,3 +14,11 @@ ul{
 list-style-type: none;
 float: left;
 }
+.xxx{
+list-style:none;
+}
+.zz{
+margin:2px
+border:2px solid red;    /* solid实线*/
+    height: 49px;
+}
