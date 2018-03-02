@@ -1,23 +1,10 @@
-# #coding:utf-8
+# cd C:\Users\ck\PycharmProjects\VangeServer
+# python manage.py runserver 0:8080
 #
-# import win32clipboard as w
-# import win32con
+# cd C:\Users\ck\PycharmProjects\VangeServer
+# python manage.py makemigrations
+# python manage.py migrate
 #
-# #获取剪切板内容
-# def gettext():
-#     w.OpenClipboard()
-#     t = w.GetClipboardData(win32con.CF_TEXT)
-#     w.CloseClipboard()
-#     return t
 #
-# #写入剪切板内容
-# def settext(aString):
-#     w.OpenClipboard()
-#     w.EmptyClipboard()
-#     w.SetClipboardData(win32con.CF_TEXT, aString)
-#     w.CloseClipboard()
-# a="aaaa"
-# settext(a)
-# str=gettext()
-# x=b"\x00"
-# print(str.decode("utf-8").replace(x.decode("utf-8"),""))
+# SELECT t.*,(select category from vange.vange_category where category_id=id)category_id FROM vange.vange_bug t LIMIT 0, 50000
+# SELECT t.*,a.category,b.publisher FROM vange.vange_bug t left join vange.vange_category a on t.category_id= a.id left join vange.vange_publisher b on t.publisher_id=b.id LIMIT 0, 50000

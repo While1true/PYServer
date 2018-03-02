@@ -25,21 +25,26 @@ def index(request):
 
 def category(request):
     objects_all = Category.objects.values("id","category")
-    list_category={}
-    for each in objects_all:
-        list_category[str(each["id"])]=each
+    list_category=[]
+    for object in objects_all:
+        list_category.append(object)
 
     values = Bug.objects.values('category').annotate(dcount=Count('category')).values("dcount", "category")
-    list_count=[]
+    list_values={}
     for value in values:
-        list_count.append(value)
+        list_values[str(value["category"])]=value
 
-    for xx in list_count:
-        xx['category_id'] = xx['category']
-        xx['category']=list_category[str(xx['category'])]['category']
+    print(list_category)
+    for xx in list_category:
+        xx['category_id'] = xx['id']
+        try:
+            value_ = (list_values[str(xx['category_id'])])['dcount']
+        except:
+            xx['dcount'] = 0
 
 
-    return HttpResponse(JsonResult.success(list_count))
+
+    return HttpResponse(JsonResult.success(list_category))
 
 
 def buglist(request):
