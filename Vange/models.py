@@ -26,6 +26,7 @@ class Publisher(models.Model):
         verbose_name_plural = "测试人员"
 
 class Bug(models.Model):
+    id=models.IntegerField(primary_key=True,auto_created=True)
     category=models.ForeignKey('Category',on_delete=models.CASCADE,verbose_name="项目名称")
     publisher=models.ForeignKey('Publisher',on_delete=models.CASCADE,verbose_name="发布者")
     title=models.CharField(max_length=100,default="",verbose_name="概要说明")

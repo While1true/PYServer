@@ -33,17 +33,13 @@ def category(request):
     list_values={}
     for value in values:
         list_values[str(value["category"])]=value
-
-    print(list_category)
     for xx in list_category:
         xx['category_id'] = xx['id']
         try:
-            value_ = (list_values[str(xx['category_id'])])['dcount']
+            xx['dcount'] = (list_values[str(xx['category_id'])])['dcount']
         except:
             xx['dcount'] = 0
-
-
-
+    print(list_category)
     return HttpResponse(JsonResult.success(list_category))
 
 
@@ -56,6 +52,7 @@ def buglist(request):
     #                                                          "like",
     #                                                          "time")[num * size:(num + 1) * size]
     bugs_list = Bug.objects.filter(category=category)[num * size:(num + 1) * size]
+    print(bugs_list)
     return HttpResponse(JsonResult.success(data=bugs_list))
 
 
