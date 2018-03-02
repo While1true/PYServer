@@ -5,6 +5,7 @@ from Vange.models import Bug,Publisher,Category
 class MasterAdmin(admin.ModelAdmin):
     list_display = ('category','issue','publisher','time')
 
-admin.site.register([Bug,Publisher,Category])
+admin.site.register(Bug,admin_class=MasterAdmin)
+admin.site.register([Publisher,Category])
 # admin.site.register(Publisher,MasterAdmin)
 # admin.site.register(Category,MasterAdmin)

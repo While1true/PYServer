@@ -1,11 +1,9 @@
-from Vange.models import Bug
-
-from datetime import datetime
-import json
-
+from django.db import models
 import json
 from datetime import date, datetime
 from django.db.models import QuerySet
+from django.core import serializers
+
 
 
 class DateEncoder(json.JSONEncoder):
@@ -26,7 +24,10 @@ class JsonResult(object):
     @staticmethod
     def success(data) -> str:
         if isinstance(data, QuerySet):
-            data = json.dumps(list(data), cls=DateEncoder)
+            try:
+                data = serializers.serialize("json", data, use_natural_foreign_keys=True)
+            except:
+                data = json.dumps(list(data), cls=DateEncoder)
         elif isinstance(data, dict) or isinstance(data, list):
             data = json.dumps(data)
         return JsonResult.BASE_MODEL.format(message='"success"', code=200, data=data)
