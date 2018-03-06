@@ -1,3 +1,5 @@
+from enum import unique
+
 from django.db import models
 
 # Create your models here.
@@ -9,7 +11,6 @@ class master(models.Model):
     timestr=models.CharField(max_length=50)
     fid=models.CharField(max_length=50)
     mid=models.CharField(max_length=50)
-    mid=models.CharField(max_length=5000)
     datelong=models.CharField(max_length=50)
     hrefStr=models.CharField(max_length=50)
     href=models.CharField(max_length=200)
@@ -18,7 +19,7 @@ class master(models.Model):
     def __str__(self):
         return self.content
 
-    def toJSON(self):
-        import json
-        return json.dumps(dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]]))
-
+class Like(models.Model):
+    like_id=models.ForeignKey(master,unique=True,on_delete=models.CASCADE)
+    like_date=models.DateField(auto_now=True)
+    like_user=models.CharField(max_length=200)
