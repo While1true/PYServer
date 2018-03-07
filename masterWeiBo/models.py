@@ -20,6 +20,6 @@ class master(models.Model):
         return self.content
 
 class Like(models.Model):
-    like_id=models.ForeignKey(master,unique=True,on_delete=models.CASCADE)
+    like_id=models.IntegerField()
     like_date=models.DateField(auto_now=True)
     like_user=models.CharField(max_length=200)

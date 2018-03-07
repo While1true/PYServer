@@ -9,4 +9,6 @@ urlpatterns = [
     url('^category', views.category, name='category'),
     url('^articallist', views.articallist, name='articallist'),
     url('^todo', views.todo, name='todo'),
+    url('^like', views.like, name='like'),
+    url('^getlikelist', views.getlikelist, name='getlikelist'),
 ]
