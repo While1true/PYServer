@@ -68,8 +68,8 @@ host = "http://10.0.110.134:8090/masterWeiBo/static/pic/"
 
 
 def generatePic(word, md5name,pattern=None):
-    path = pathx + str(md5name) + ".jpg"
-    if (os.path.exists(path)):
+    pathx = "public/pic/" + str(md5name) + ".jpg"
+    if (os.path.exists(pathx)):
         return host + str(md5name) + ".jpg"
     else:
         draw_wordcloud(word, str(md5name) + ".jpg",pattern)
