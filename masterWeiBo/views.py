@@ -1,3 +1,6 @@
+import os
+from _md5 import md5
+
 from django.db.models import Count
 from django.db.models.query import QuerySet
 from django.shortcuts import render
@@ -6,13 +9,13 @@ from django.shortcuts import render
 import json
 from django.http import HttpResponse
 from django.template import loader
-from masterWeiBo.models import master, Like
+from masterWeiBo.models import master, Like,WordCloud,WordPattern
 from django.core import serializers
 from django.forms.models import model_to_dict
 
 from masterWeiBo.templates.Models import JsonResult
 
-BASE_MODEL = '''{{"message":"成功","data":{data},"code":200}}'''
+# BASE_MODEL = '''{{"message":"成功","data":{data},"code":200}}'''
 
 
 def index(request):
@@ -26,7 +29,7 @@ def index(request):
 
 def category(request):
     category__annotate = master.objects.values("category").annotate(count=Count('category'))
-    return HttpResponse(BASE_MODEL.format(data=json.dumps(list(category__annotate))))
+    return HttpResponse(JsonResult.success(category__annotate))
 
 
 def articallist(request):
@@ -68,12 +71,12 @@ def like(request):
             print("---------------------------------------------------------------")
             like = Like(like_id=like_id, like_user=like_user)
             like.save(force_insert=True)
-            return HttpResponse(JsonResult.success('"成功"'))
+            return HttpResponse(JsonResult.success('成功'))
     else:
         assert isinstance(objects_filter, QuerySet)
         if (objects_filter.exists()):
             objects_filter.delete()
-            return HttpResponse(JsonResult.success('"成功"'))
+            return HttpResponse(JsonResult.success('成功'))
     message = ""
     if (flag == '1'):
         message = "已经收藏过了"
@@ -99,3 +102,32 @@ def getlikelist(request):
         artical['like_count'] = like_count
         listxx.append(artical)
     return HttpResponse(JsonResult.success(data=listxx))
+
+from masterWeiBo.Utils.WordCloud import generatePic
+def getWordCloud(request):
+    context = request.GET.get('context')
+    id = request.GET.get('id')
+    pattern = request.GET.get('pattern',default=None)
+    user = request.GET.get('user')
+    name= md5((id+context).encode("utf8"))
+    pic_url = generatePic(context, name.hexdigest(),pattern)
+    filter = WordCloud.objects.filter(user=user, artical_id=id)
+    if not filter.exists():
+        WordCloud(user=user, artical_id=id, url=pic_url).save(force_insert=True)
+    return HttpResponse(JsonResult.success(data=pic_url))
+
+def uploadPattern(request):
+    try:
+        user = request.GET.get('user')
+        name = request.GET.get('name')
+        pattern = request.GET.get('pattern', default=None)
+        filter = WordCloud.objects.filter(user=user, name=name)
+        if not filter.exists():
+             WordPattern(user=user,name="/public/media/"+name,img=pattern).save()
+        return HttpResponse(JsonResult.success(data="成功"))
+    except Exception:
+        return HttpResponse(JsonResult.failure(data="失败"))
+
+
+
+

@@ -23,3 +23,15 @@ class Like(models.Model):
     like_id=models.IntegerField()
     like_date=models.DateField(auto_now=True)
     like_user=models.CharField(max_length=200)
+
+class WordCloud(models.Model):
+    artical_id=models.IntegerField()
+    user=models.CharField(max_length=200)
+    url=models.CharField(max_length=1000)
+    date=models.DateField(auto_now=True)
+    pattern=models.CharField(max_length=1000,default="")
+
+class WordPattern(models.Model):
+    user=models.CharField(max_length=200,null=False)
+    name=models.CharField(max_length=200,null=False)
+    img=models.ImageField()

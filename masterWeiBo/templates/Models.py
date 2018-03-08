@@ -29,6 +29,8 @@ class JsonResult(object):
                 data = json.dumps(list(data), cls=DateEncoder)
         elif isinstance(data, dict) or isinstance(data, list):
             data = json.dumps(data)
+        elif isinstance(data,str):
+            data='"%s"' % data
         return JsonResult.BASE_MODEL.format(message='"success"', code=200, data=data)
 
     @staticmethod
