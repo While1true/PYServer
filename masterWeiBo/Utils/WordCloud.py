@@ -20,9 +20,9 @@ from os import path
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 
-pwd = os.getcwd()
-father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + ".")
-pathx = father_path + os.path.sep + "static" + os.path.sep
+# pwd = os.getcwd()
+# father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + ".")
+# pathx = father_path + os.path.sep + "static" + os.path.sep
 
 
 # 绘制词云
@@ -32,12 +32,13 @@ def draw_wordcloud(word, name,pattern):
     # 结巴分词，生成字符串，如果不通过分词，无法直接生成正确的中文词云
     cut_text = " ".join(jieba.cut(word))
     # 当前文件的路径
-    path = pathx + name
+    # path = pathx + name
     color_mask =None
-    try:
-        color_mask=imread(pattern) # 读取背景图片
-    except Exception:
-        pass
+    if(pattern):
+        try:
+            color_mask=imread(pattern) # 读取背景图片
+        except Exception:
+            pass
     cloud = WordCloud(
         # 设置字体，不指定就会出现乱码
         font_path=r"msyh.ttc",
@@ -57,7 +58,7 @@ def draw_wordcloud(word, name,pattern):
     )
     word_cloud = cloud.generate(cut_text)  # 产生词云
     word_cloud.to_file("public/pic/" + name)  # 保存图片
-    return path
+    # return path
 
 
 #  显示词云图片
