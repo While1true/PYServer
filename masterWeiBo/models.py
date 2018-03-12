@@ -34,4 +34,4 @@ class WordCloud(models.Model):
 class WordPattern(models.Model):
     user=models.CharField(max_length=200,null=False)
     name=models.CharField(max_length=200,null=False)
-    img=models.ImageField()
+    img=models.ImageField(upload_to="media")

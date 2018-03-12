@@ -118,9 +118,10 @@ def getWordCloud(request):
 
 def uploadPattern(request):
     try:
-        user = request.GET.get('user')
-        name = request.GET.get('name')
-        pattern = request.GET.get('pattern', default=None)
+        user = request.POST.get('user')
+        name = request.POST.get('name')
+        print(user+name+"----")
+        pattern = request.FILES.get('pattern', default=None)
         filter = WordCloud.objects.filter(user=user, name=name)
         if not filter.exists():
              WordPattern(user=user,name="/public/media/"+name,img=pattern).save()
