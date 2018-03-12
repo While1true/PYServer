@@ -163,15 +163,19 @@ def getWordCloud(request):
         WordCloud(user=user, artical_id=id, url=pic_url).save(force_insert=True)
     return HttpResponse(JsonResult.success(data=pic_url))
 
+from django.views.decorators.csrf import csrf_exempt
+from public.GLOBAVARS import UPLOAD_IMG_HOST as host
+@csrf_exempt
 def uploadPattern(request):
     try:
-        user = request.POST.get('user')
-        name = request.POST.get('name')
+        user = request.GET.get('user')
+        name = request.GET.get('name')
         print(user+name+"----")
         pattern = request.FILES.get('pattern', default=None)
-        filter = WordCloud.objects.filter(user=user, name=name)
+
+        filter = WordPattern.objects.filter(user=user, name=host+name)
         if not filter.exists():
-             WordPattern(user=user,name="/public/media/"+name,img=pattern).save()
+             WordPattern(user=user,name=host+name,img=pattern).save()
         return HttpResponse(JsonResult.success(data="成功"))
     except Exception:
         return HttpResponse(JsonResult.failure(data="失败"))
