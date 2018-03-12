@@ -65,7 +65,7 @@ def draw_wordcloud(word, name,pattern):
 # plt.imshow(word_cloud, interpolation="bilinear")
 # plt.axis('off')
 # plt.show()
-host = "http://10.0.110.134:8090/masterWeiBo/static/pic/"
+host = "http://192.168.0.110:8090/masterWeiBo/static/pic/"
 
 
 def generatePic(word, md5name,pattern=None):

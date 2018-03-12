@@ -19,12 +19,59 @@ from masterWeiBo.templates.Models import JsonResult
 
 
 def index(request):
-    latest_list = master.objects.order_by('timestr')[:5]
-    template = loader.get_template('index.html')
+
+    #获取文章列表
+    page=int(request.GET.get("page",1))
+    if (page < 1):
+        page = 1
+    categoryxx=request.GET.get("category")
+    come=request.GET.get("come")
+    objects = master.objects
+    if(categoryxx):
+        objects=objects.filter(category=categoryxx)
+
+    if (come):
+        objects = objects.filter(come=come)
+
+    artical_list = objects.order_by('-timestr')[(page*10):((1+page)*10)]
+
+    #获取分类
+    category_list = master.objects.values("category").annotate(count=Count('category'))
+
+    #获取来源
+    come_list = master.objects.values("come").annotate(count=Count('come'))
+
     context = {
-        'latest_list': latest_list,
+        'artical_list': artical_list,
+        'pre':page if(page<=1) else (page-1),
+        'next':page+1,
+        'category_list':category_list,
+        'come_list':come_list,
+
     }
+    if(come):
+        context['come']=come
+    if(categoryxx):
+        context['category'] = categoryxx
+
+    template = loader.get_template('index.html')
     return HttpResponse(template.render(context, request))
+
+
+def about(request):
+    return HttpResponse(loader.get_template('about.html').render())
+
+
+
+
+
+
+#以上博客
+#--------------------------------------------------------
+
+
+
+
 
 
 def category(request):
@@ -38,7 +85,7 @@ def articallist(request):
     num = int(request.GET.get("pagenum", default=0))
     size = int(request.GET.get("pagesize", default=10))
     articallist = master.objects.filter(category=category).values('id', 'category', 'content', 'come', 'mid',
-                                                                  'hrefStr', 'datelong', 'timestr', 'imgs','href')[
+                                                                  'hrefStr', 'datelong', 'timestr', 'imgs','href').order_by("-datelong")[
                   num * size:(num + 1) * size]
     listxx = []
     for artical in articallist:
