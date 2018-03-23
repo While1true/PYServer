@@ -11,7 +11,6 @@ from django.http import HttpResponse
 from django.template import loader
 from masterWeiBo.models import master, Like,WordCloud,WordPattern
 from django.core import serializers
-from django.forms.models import model_to_dict
 
 from masterWeiBo.templates.Models import JsonResult
 
