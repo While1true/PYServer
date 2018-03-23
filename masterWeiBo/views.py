@@ -179,7 +179,34 @@ def uploadPattern(request):
         return HttpResponse(JsonResult.success(data="成功"))
     except Exception:
         return HttpResponse(JsonResult.failure(data="失败"))
+import jieba
+from django.db.models import Q
+def search(request):
+    category = request.GET.get("category")
+    words = request.GET.get("words")
+    cut = jieba.cut(words)
+    like_user = request.GET.get("like_user")
+    num = int(request.GET.get("pagenum", default=0))
+    size = int(request.GET.get("pagesize", default=10))
+    articallist = master.objects;
+    print(category)
+    if(category):
+        articallist=articallist.filter(category=category)
+    for word in cut:
+        print(word.strip())
+        if(word.strip()):
+            articallist=articallist.filter(Q(content__icontains=word)|Q(come__icontains=word)|Q(timestr__icontains=word))
 
-
-
+    articallist=articallist.values('id', 'category', 'content', 'come', 'mid', 'hrefStr', 'datelong', 'timestr', 'imgs','href').order_by("-datelong")[
+                  num * size:(num + 1) * size]
+    listxx = []
+    for artical in articallist:
+        like_count = Like.objects.filter(like_id=artical['id']).count()
+        islike = Like.objects.filter(like_id=artical['id'], like_user=like_user)
+        # if(objects_filter):
+        if (islike.exists()):
+            artical['is_like'] = 1
+        artical['like_count'] = like_count
+        listxx.append(artical)
+    return HttpResponse(JsonResult.success(data=listxx))
 

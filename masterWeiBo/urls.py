@@ -18,4 +18,5 @@ urlpatterns = [
     url('^getlikelist', views.getlikelist, name='getlikelist'),
     url('^getWordCloud', views.getWordCloud, name='getWordCloud'),
     url('^uploadPattern', views.uploadPattern, name='uploadPattern'),
+    url('^search', views.search, name='search'),
 ]+static(settings.MEDIA_URL, document_root = settings.STATICFILES_DIRS)
