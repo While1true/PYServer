@@ -81,11 +81,11 @@ def category(request):
 def articallist(request):
     category = request.GET.get("category")
     like_user = request.GET.get("like_user")
-    num = int(request.GET.get("pagenum", default=0))
+    num = int(request.GET.get("pagenum", default=1))
     size = int(request.GET.get("pagesize", default=10))
     articallist = master.objects.filter(category=category).values('id', 'category', 'content', 'come', 'mid',
                                                                   'hrefStr', 'datelong', 'timestr', 'imgs','href').order_by("-datelong")[
-                  num * size:(num + 1) * size]
+                  (num - 1) * size: num * size]
     listxx = []
     for artical in articallist:
         like_count = Like.objects.filter(like_id=artical['id']).count()
@@ -133,10 +133,10 @@ def like(request):
 
 def getlikelist(request):
     like_user = request.GET.get('like_user')
-    num = int(request.GET.get("pagenum", default=0))
+    num = int(request.GET.get("pagenum", default=1))
     size = int(request.GET.get("pagesize", default=10))
     likes=Like.objects.filter(like_user=like_user).values('like_id')[
-                  num * size:(num + 1) * size]
+          (num-1) * size:num * size]
     listxx = []
     for like in likes:
         like_id_ = like['like_id']
@@ -191,7 +191,7 @@ def search(request):
     words = request.GET.get("words")
     cut = jieba.cut(words)
     like_user = request.GET.get("like_user")
-    num = int(request.GET.get("pagenum", default=0))
+    num = int(request.GET.get("pagenum", default=1))
     size = int(request.GET.get("pagesize", default=10))
     articallist = master.objects;
     print(category)
@@ -203,7 +203,7 @@ def search(request):
             articallist=articallist.filter(Q(content__icontains=word)|Q(come__icontains=word)|Q(timestr__icontains=word))
 
     articallist=articallist.values('id', 'category', 'content', 'come', 'mid', 'hrefStr', 'datelong', 'timestr', 'imgs','href').order_by("-datelong")[
-                  num * size:(num + 1) * size]
+                (num - 1) * size:num * size]
     listxx = []
     for artical in articallist:
         like_count = Like.objects.filter(like_id=artical['id']).count()
