@@ -130,6 +130,7 @@ def like(request):
         message = "没有收藏过该博文"
     return HttpResponse(JsonResult.failure(message))
 
+
 def getlikelist(request):
     like_user = request.GET.get('like_user')
     num = int(request.GET.get("pagenum", default=0))
@@ -149,6 +150,7 @@ def getlikelist(request):
         listxx.append(artical)
     return HttpResponse(JsonResult.success(data=listxx))
 
+
 from masterWeiBo.Utils.WordCloud import generatePic
 def getWordCloud(request):
     context = request.GET.get('context')
@@ -161,6 +163,7 @@ def getWordCloud(request):
     if not filter.exists():
         WordCloud(user=user, artical_id=id, url=pic_url).save(force_insert=True)
     return HttpResponse(JsonResult.success(data=pic_url))
+
 
 from django.views.decorators.csrf import csrf_exempt
 from public.GLOBAVARS import UPLOAD_IMG_HOST as host
@@ -178,6 +181,9 @@ def uploadPattern(request):
         return HttpResponse(JsonResult.success(data="成功"))
     except Exception:
         return HttpResponse(JsonResult.failure(data="失败"))
+
+
+
 import jieba
 from django.db.models import Q
 def search(request):
@@ -208,4 +214,12 @@ def search(request):
         artical['like_count'] = like_count
         listxx.append(artical)
     return HttpResponse(JsonResult.success(data=listxx))
+
+import random
+def latestSplash(r):
+    type = r.GET.get('type')
+    #1.最近的文章
+    randindex = random.randint(0, 5)
+    artical=master.objects.order_by("-datelong").values('id', 'category', 'content', 'come', 'mid', 'hrefStr', 'datelong', 'timestr', 'imgs','href')[randindex]
+    return HttpResponse(JsonResult.success(data=artical))
 
