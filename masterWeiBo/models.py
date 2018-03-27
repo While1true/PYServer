@@ -45,6 +45,6 @@ class Science(models.Model):
     description=models.CharField(max_length=200)
     packageName=models.CharField(max_length=200)
     icon=models.ImageField(upload_to="public/media")
+    url=models.FileField(upload_to="public/")
     mainActivity=models.CharField(max_length=200)
-    url=models.CharField(max_length=500)
     date=models.DateTimeField(auto_now=True)

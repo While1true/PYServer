@@ -254,10 +254,14 @@ def statistics(r):
 
 from public import GLOBAVARS
 def science(r):
-    values = Science.objects.values('name', 'description', 'packageName', 'mainActivity', 'url', 'date','icon')
+    values = Science.objects.values('name', 'description', 'packageName', 'mainActivity', 'url' ,'date','icon')
     for value in values:
         icon_ = value['icon']
+        url_ = value['url']
         assert  isinstance(icon_,str)
         replace = icon_.replace("public/media/", GLOBAVARS.UPLOAD_IMG_HOST)
+        replace_file = url_.replace("public/", GLOBAVARS.CURRENT_HOST)
+        value['url']=replace_file
         value['icon'] =replace
+        value['size'] =os.path.getsize(url_)
     return HttpResponse(JsonResult.success(data=values))
