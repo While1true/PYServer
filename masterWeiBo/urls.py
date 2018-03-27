@@ -20,4 +20,6 @@ urlpatterns = [
     url('^uploadPattern', views.uploadPattern, name='uploadPattern'),
     url('^search', views.search, name='search'),
     url('^latestSplash', views.latestSplash, name='latestSplash'),
+    url('^statistics', views.statistics, name='statistics'),
+    url('^science', views.science, name='science'),
 ]+static(settings.MEDIA_URL, document_root = settings.STATICFILES_DIRS)

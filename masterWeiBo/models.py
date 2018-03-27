@@ -35,3 +35,16 @@ class WordPattern(models.Model):
     user=models.CharField(max_length=200,null=False)
     name=models.CharField(max_length=200,null=False)
     img=models.ImageField(upload_to="public/media")
+    
+class Statistics(models.Model):
+    user=models.CharField(max_length=200)
+    date=models.DateTimeField(auto_now=True)
+
+class Science(models.Model):
+    name=models.CharField(max_length=200)
+    description=models.CharField(max_length=200)
+    packageName=models.CharField(max_length=200)
+    icon=models.ImageField(upload_to="public/media")
+    mainActivity=models.CharField(max_length=200)
+    url=models.CharField(max_length=500)
+    date=models.DateTimeField(auto_now=True)
