@@ -45,8 +45,8 @@ class Statistics(models.Model):
 class Science(models.Model):
     name=models.CharField(max_length=200)
     description=models.CharField(max_length=200)
-    packageName=models.CharField(max_length=200)
+    packageName=models.CharField(max_length=200,null=True)
     icon=models.ImageField(upload_to="public/media")
-    url=models.FileField(upload_to="public/")
-    mainActivity=models.CharField(max_length=200)
+    url=models.FileField(upload_to="public/",null=True)
+    mainActivity=models.CharField(max_length=200,null=True)
     date=models.DateTimeField(auto_now=True)
