@@ -38,7 +38,9 @@ class WordPattern(models.Model):
     
 class Statistics(models.Model):
     user=models.CharField(max_length=200)
+    ip=models.CharField(max_length=200)
     date=models.DateTimeField(auto_now=True)
+
 
 class Science(models.Model):
     name=models.CharField(max_length=200)

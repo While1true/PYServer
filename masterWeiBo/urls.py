@@ -22,4 +22,6 @@ urlpatterns = [
     url('^latestSplash', views.latestSplash, name='latestSplash'),
     url('^statistics', views.statistics, name='statistics'),
     url('^science', views.science, name='science'),
+    url('^getHistory100', views.getHistory100, name='getHistory100'),
+    url('^getMycloud100', views.getMycloud100, name='getMycloud100'),
 ]+static(settings.MEDIA_URL, document_root = settings.STATICFILES_DIRS)

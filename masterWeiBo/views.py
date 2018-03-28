@@ -236,6 +236,10 @@ import time
 def statistics(r):
     try:
         user = r.GET.get('user')
+        if("HTTP_X_FORWARDED_FOR" in r.META):
+            ip=r.META["HTTP_X_FORWARDED_FOR"]
+        else:
+            ip=r.META['REMOTE_ADDR']
         objects_filter = Statistics.objects.filter(user=user)
         count = objects_filter.count()
         result = {}
@@ -246,7 +250,7 @@ def statistics(r):
             result['lasttime'] = lastlogin.date.strftime("%Y-%m-%d %H:%M:%S")
         else:
             result['lasttime'] = "这是您的初次登陆"
-        Statistics(user=user).save(force_insert=True)
+        Statistics(user=user,ip=ip).save(force_insert=True)
     except:
         return HttpResponse(JsonResult.failure(data=None))
     print(result)
@@ -254,7 +258,7 @@ def statistics(r):
 
 from public import GLOBAVARS
 def science(r):
-    values = Science.objects.values('name', 'description', 'packageName', 'mainActivity', 'url' ,'date','icon')
+    values = Science.objects.order_by('-date').values('name', 'description', 'packageName', 'mainActivity', 'url' ,'date','icon')
     for value in values:
         icon_ = value['icon']
         url_ = value['url']
@@ -263,5 +267,17 @@ def science(r):
         replace_file = url_.replace("public/", GLOBAVARS.CURRENT_HOST)
         value['url']=replace_file
         value['icon'] =replace
-        value['size'] =os.path.getsize(url_)
+        if(url_):
+            value['size'] =os.path.getsize(url_)
     return HttpResponse(JsonResult.success(data=values))
+
+def getHistory100(r):
+    user = r.GET.get('user')
+    historys = Statistics.objects.filter(user=user).order_by('-date').values('date','ip')[:100]
+    return HttpResponse(JsonResult.success(data=historys))
+
+def getMycloud100(r):
+    user = r.GET.get('user')
+    historys = WordCloud.objects.filter(user=user).order_by('-date').values('date','url')[:100]
+    return HttpResponse(JsonResult.success(data=historys))
+
