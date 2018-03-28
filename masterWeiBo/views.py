@@ -247,6 +247,7 @@ def statistics(r):
         lastlogin = objects_filter.order_by("-date")
         if (lastlogin):
             lastlogin = lastlogin[:1][0]
+            result['ip']=lastlogin.ip
             result['lasttime'] = lastlogin.date.strftime("%Y-%m-%d %H:%M:%S")
         else:
             result['lasttime'] = "这是您的初次登陆"
