@@ -57,7 +57,7 @@ def draw_wordcloud(word, name,pattern):
         scale=1.5
     )
     word_cloud = cloud.generate(cut_text)  # 产生词云
-    word_cloud.to_file("public/pic/" + name)  # 保存图片
+    word_cloud.to_file("static/pic/" + name)  # 保存图片
     # return path
 
 
@@ -69,7 +69,7 @@ from public.GLOBAVARS import WORDPRESS_HOST as host
 
 
 def generatePic(word, md5name,pattern=None):
-    pathx = "public/pic/" + str(md5name) + ".jpg"
+    pathx = "static/pic/" + str(md5name) + ".jpg"
     if (os.path.exists(pathx)):
         return host + str(md5name) + ".jpg"
     else:

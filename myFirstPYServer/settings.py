@@ -122,8 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 MEDIA_URL = '/media/'
 
-STATIC_URL = '/masterWeiBo/static/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT = (os.path.join(BASE_DIR, 'static'))
+STATIC_ROOT = '/static/'
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "public"),)
+STATICFILES_DIRS = ('C:/Users/ck/PycharmProjects/PYServer/static/',)

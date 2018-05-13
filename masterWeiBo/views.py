@@ -162,7 +162,7 @@ def getWordCloud(request):
 
 
 from django.views.decorators.csrf import csrf_exempt
-from public.GLOBAVARS import UPLOAD_IMG_HOST as host
+from static.GLOBAVARS import UPLOAD_IMG_HOST as host
 
 
 @csrf_exempt
@@ -257,15 +257,15 @@ def statistics(r):
     print(result)
     return HttpResponse(JsonResult.success(data=result))
 
-from public import GLOBAVARS
+from static import GLOBAVARS
 def science(r):
     values = Science.objects.order_by('-date').values('name', 'description', 'packageName', 'mainActivity', 'url' ,'date','icon')
     for value in values:
         icon_ = value['icon']
         url_ = value['url']
         assert  isinstance(icon_,str)
-        replace = icon_.replace("public/media/", GLOBAVARS.UPLOAD_IMG_HOST)
-        replace_file = url_.replace("public/", GLOBAVARS.CURRENT_HOST)
+        replace = icon_.replace("static/media/", GLOBAVARS.UPLOAD_IMG_HOST)
+        replace_file = url_.replace("static/", GLOBAVARS.CURRENT_HOST)
         value['url']=replace_file
         value['icon'] =replace
         if(url_):

@@ -1,0 +1,16 @@
+#title{
+padding-top:50px;
+color:#ff7688;
+}
+.title{
+font-size:22px;
+color:#535353;
+}
+.content{
+font-size:20px;
+color:#ff4070;
+}
+ul{
+list-style-type: none;
+float: left;
+}
