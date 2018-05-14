@@ -9,7 +9,7 @@ from django.shortcuts import render
 import json
 from django.http import HttpResponse
 from django.template import loader
-from masterWeiBo.models import master, Like, WordCloud, WordPattern, Statistics, Science
+from masterWeiBo.models import master, Like, WordCloud, WordPattern, Statistics, Science,Update,Download
 from django.core import serializers
 
 from masterWeiBo.templates.Models import JsonResult
@@ -168,17 +168,15 @@ from public.GLOBAVARS import UPLOAD_IMG_HOST as host
 @csrf_exempt
 def uploadPattern(request):
     try:
-        user = request.GET.get('user')
-        name = request.GET.get('name')
-        print(user + name + "----")
-        pattern = request.FILES.get('pattern', default=None)
-
+        user = request.POST.get('user')
+        name = request.POST.get('name')
+        pattern = request.FILES.get('aaa', default=None)
         filter = WordPattern.objects.filter(user=user, name=host + name)
         if not filter.exists():
             WordPattern(user=user, name=host + name, img=pattern).save()
         return HttpResponse(JsonResult.success(data="成功"))
     except Exception:
-        return HttpResponse(JsonResult.failure(data="失败"))
+        return HttpResponse(JsonResult.failure(message="失败"))
 
 
 import jieba
@@ -282,3 +280,19 @@ def getMycloud100(r):
     historys = WordCloud.objects.filter(user=user).order_by('-date').values('date','url')[:100]
     return HttpResponse(JsonResult.success(data=historys))
 
+def update(r):
+    historys = Update.objects.order_by('-date').values('appSize','downloadLink','updateInformation','updateNumber','versionNumber')[:1]
+    return HttpResponse(JsonResult.success(data=historys))
+
+def downloadstatistic(r):
+   try:
+        user = r.GET.get('user')
+        if ("HTTP_X_FORWARDED_FOR" in r.META):
+            ip = r.META["HTTP_X_FORWARDED_FOR"]
+        else:
+            ip = r.META['REMOTE_ADDR']
+        if(user):
+            Download(user=user, ip=ip).save(force_insert=True);
+   except:
+       pass
+   return HttpResponse(JsonResult.success(data=None))

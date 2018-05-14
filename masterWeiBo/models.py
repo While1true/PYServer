@@ -50,3 +50,14 @@ class Science(models.Model):
     url=models.FileField(upload_to="public/",null=True)
     mainActivity=models.CharField(max_length=200,null=True)
     date=models.DateTimeField(auto_now=True)
+class Update(models.Model):
+    appSize=models.CharField(max_length=200)
+    updateInformation=models.CharField(max_length=200)
+    updateNumber=models.IntegerField()
+    versionNumber=models.CharField(max_length=200,null=True)
+    downloadLink=models.CharField(max_length=200,null=True)
+    date=models.DateTimeField(auto_now=True)
+class Download(models.Model):
+    user=models.CharField(max_length=200)
+    ip=models.CharField(max_length=200)
+    date=models.DateTimeField(auto_now=True)
