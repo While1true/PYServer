@@ -9,7 +9,7 @@ from django.shortcuts import render
 import json
 from django.http import HttpResponse
 from django.template import loader
-from masterWeiBo.models import master, Like, WordCloud, WordPattern, Statistics, Science,Update,Download
+from masterWeiBo.models import master, Like, WordCloud, WordPattern, Statistics, Science,Update,Download,Category
 from django.core import serializers
 
 from masterWeiBo.templates.Models import JsonResult
@@ -66,7 +66,7 @@ def about(request):
 
 
 def category(request):
-    category__annotate = master.objects.values("category").annotate(count=Count('category'))
+    category__annotate = Category.objects.values("category","count","wordsTop10")
     return HttpResponse(JsonResult.success(category__annotate))
 
 
@@ -153,7 +153,10 @@ def getWordCloud(request):
     id = request.GET.get('id')
     pattern = request.GET.get('pattern', default=None)
     user = request.GET.get('user')
-    name = md5((id + context).encode("utf8"))
+    if (pattern):
+        name = md5((id + context+pattern).encode("utf8"))
+    else:
+        name = md5((id + context).encode("utf8"))
     pic_url = generatePic(context, name.hexdigest(), pattern)
     filter = WordCloud.objects.filter(user=user, artical_id=id)
     if not filter.exists():
@@ -171,14 +174,23 @@ def uploadPattern(request):
         user = request.POST.get('user')
         name = request.POST.get('name')
         pattern = request.FILES.get('aaa', default=None)
-        filter = WordPattern.objects.filter(user=user, name=host + name)
+        filter = WordPattern.objects.filter(user=user, name=name)
         if not filter.exists():
-            WordPattern(user=user, name=host + name, img=pattern).save()
+            WordPattern(user=user, name=name, img=pattern).save()
         return HttpResponse(JsonResult.success(data="成功"))
     except Exception:
         return HttpResponse(JsonResult.failure(message="失败"))
 
-
+def getPattern(r):
+    try:
+        user = r.POST.get('user')
+        if(user):
+            filter = WordPattern.objects.filter(user=user)
+        else:
+            filter = WordPattern.objects
+        return HttpResponse(JsonResult.success(data=filter.values('name','user','img')))
+    except Exception:
+        return HttpResponse(JsonResult.failure(message="失败"))
 import jieba
 from django.db.models import Q
 
@@ -228,7 +240,7 @@ def latestSplash(r):
     return HttpResponse(JsonResult.success(data=artical))
 
 
-import time
+
 
 
 def statistics(r):

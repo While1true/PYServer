@@ -9,7 +9,7 @@
 
 # wordcloud生成中文词云
 
-from wordcloud import WordCloud
+from wordcloud import WordCloud,ImageColorGenerator
 import codecs
 import jieba
 # import jieba.analyse as analyse
@@ -19,12 +19,14 @@ import os
 from os import path
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
-
+import numpy as np
 # pwd = os.getcwd()
 # father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + ".")
 # pathx = father_path + os.path.sep + "static" + os.path.sep
 
-
+pwd = os.getcwd()
+father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + "..")
+path=father_path+"/static/pic/"
 # 绘制词云
 def draw_wordcloud(word, name,pattern):
     # 读入一个txt文件
@@ -37,11 +39,12 @@ def draw_wordcloud(word, name,pattern):
     if(pattern):
         try:
             color_mask=imread(pattern) # 读取背景图片
+            print(color_mask)
         except Exception:
             pass
     cloud = WordCloud(
         # 设置字体，不指定就会出现乱码
-        font_path=r"msyh.ttc",
+        font_path=pwd+"/msyh.ttc",
         # font_path=path.join(d,'simsun.ttc'),
         # 设置背景色
         background_color='white',
@@ -57,8 +60,11 @@ def draw_wordcloud(word, name,pattern):
         scale=1.5
     )
     word_cloud = cloud.generate(cut_text)  # 产生词云
-    word_cloud.to_file("public/pic/" + name)  # 保存图片
+    word_cloud.to_file(path + name)  # 保存图片
     # return path
+    # alice_coloring = np.array(Image.open(pattern))
+    # image_colors = ImageColorGenerator(alice_coloring)
+    # word_cloud.recolor(color_func=image_colors)
 
 
 #  显示词云图片
@@ -69,7 +75,7 @@ from public.GLOBAVARS import WORDPRESS_HOST as host
 
 
 def generatePic(word, md5name,pattern=None):
-    pathx = "public/pic/" + str(md5name) + ".jpg"
+    pathx = path + str(md5name) + ".jpg"
     if (os.path.exists(pathx)):
         return host + str(md5name) + ".jpg"
     else:
@@ -77,6 +83,6 @@ def generatePic(word, md5name,pattern=None):
         return host + str(md5name) + ".jpg"
 
 
-if __name__ == '__main__':
-    print(generatePic("xxxxxrere股骨头规范教育局UIUC", 100))
-    # draw_wordcloud("道德经大家","123.jpg")
+# if __name__ == '__main__':
+#     draw_wordcloud(u"雷军作为中国互联网代表人物及全球年度电子商务创新领袖人物，曾获中国经济年度人物及十大财智领袖人物、中国互联网年度人物等多项国内外荣誉，并当选福布斯2014年度商业人物。同时兼任金山、YY、猎豹移动等三家上市公司董事长。雷军曾任两届海淀区政协委员，2012年当选北京市人大代表，2013年2月当选全国人民代表大会代表。2017年12月，荣获2017“质量之光”年度质量人物奖","123.jpg"
+#                    ,father_path+"/static/media/default.png")

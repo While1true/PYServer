@@ -31,7 +31,6 @@ class WordCloud(models.Model):
     date=models.DateField(auto_now=True)
     pattern=models.CharField(max_length=1000,default="")
 
-class WordPattern(models.Model):
     user=models.CharField(max_length=200,null=False)
     name=models.CharField(max_length=200,null=False)
     img=models.ImageField(upload_to="public/media")
@@ -41,6 +40,10 @@ class Statistics(models.Model):
     ip=models.CharField(max_length=200)
     date=models.DateTimeField(auto_now=True)
 
+class WordPattern(models.Model):
+    user=models.CharField(max_length=200,null=False)
+    name=models.CharField(max_length=200,null=False)
+    img=models.ImageField(upload_to="public/media",default=None)
 
 class Science(models.Model):
     name=models.CharField(max_length=200)
@@ -61,3 +64,8 @@ class Download(models.Model):
     user=models.CharField(max_length=200)
     ip=models.CharField(max_length=200)
     date=models.DateTimeField(auto_now=True)
+
+class Category(models.Model):
+    count=models.IntegerField()
+    category=models.CharField(max_length=100)
+    wordsTop10=models.CharField(max_length=1000)
